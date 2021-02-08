@@ -2,8 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.support import ui
 from webdriver_manager.chrome import ChromeDriverManager
 
-def page_loaded(driver):
-    return driver.find_element_by_tag_name("body")!=None
 
 driver = webdriver.Chrome(ChromeDriverManager().install())
 url = "http://eduserver.nitc.ac.in/"
@@ -13,21 +11,24 @@ wait = ui.WebDriverWait(driver,10)
 wait.until(page_loaded)
 
 
-popup = driver.find_element_by_class_name('eupopup-buttons')
-popup.click()
-print("popup taken care")
+email = '*****'
+passd = '*****'
 
-email = input("enter mail")
+driver.find_element_by_xpath('//*[@id="username"]').send_keys(email)
+driver.find_element_by_xpath('//*[@id="password"]').send_keys(passd)
+driver.find_element_by_xpath('//*[@id="region-main"]/div[2]/div[2]/div[1]/div/div[2]/form/div[3]/button').click()
 
-user = driver.find_element_by_id('username')
-user.send_keys = email
-print("username")
+print("logged in")
+driver.implicitly_wait(5)
+driver.find_element_by_link_text('Attendance').click()
+driver.implicitly_wait(5)
+driver.find_element_by_link_text('Go to activity').click()
 
-passd = input("ente pwd")
-pwd = driver.find_element_by_id('password')
-pwd.send_keys = passd
-print("password")
+driver.implicitly_wait(3)
+driver.find_element_by_link_text('Submit attendance').click()
 
-submit = driver.find_element_by_tag_name('button')
-submit.click()
-print('logging in')
+driver.implicitly_wait(2)
+driver.find_element_by_xpath('//*[@id="id_status_3318"]').click()
+driver.find_element_by_xpath('//*[@id="id_submitbutton"]').click()
+
+print("attendance done")
